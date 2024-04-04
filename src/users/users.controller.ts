@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
 @Controller('users') // This is a decorator
 // This is the parent route. '/users'
@@ -20,4 +20,37 @@ export class UsersController {
     PATCH- change one thing
     PUT- change entire thing
     */
+
+    /* -------------------- GET Route --------------------  */
+    @Get() // GET / users ---- or ---- /users?role=val&age=24 (Query param)
+    findAll(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+        return []
+    }
+
+    /*
+        We u had a specific static route '/users/interns' 
+        that would be before s dynamic route '/users/:id'
+    */
+    @Get(':id') // GET / users/:id
+    findOne(@Param('id') id: string) {
+        return { id }
+    }
+
+    /* -------------------- POST Route --------------------  */
+    @Post() // POST / users
+    create(@Body() user: {}) {
+        return user
+    }
+
+    /* -------------------- POST Route --------------------  */
+    @Patch(':id') // PATCH /users/:id
+    update(@Param('id') id: string, @Body() userUpdate: {}) {
+        return { id, ...userUpdate }
+    }
+
+    /* -------------------- DELETE Route --------------------  */
+    @Delete(':id') // DELETE /users/:id
+    delete(@Param('id') id: string) {
+        return { id }
+    }
 }
