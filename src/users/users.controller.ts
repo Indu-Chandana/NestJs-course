@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 
+import { UsersService } from './users.service';
+
 @Controller('users') // This is a decorator
 // This is the parent route. '/users'
 
@@ -7,6 +9,8 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 // u can thik, Nest is define predefin function. 
 export class UsersController {
     // planing routes, we want to handle.
+
+    constructor(private readonly userService: UsersService) { }
 
     /*
     GET /users
@@ -24,7 +28,7 @@ export class UsersController {
     /* -------------------- GET Route --------------------  */
     @Get() // GET / users ---- or ---- /users?role=val&age=24 (Query param)
     findAll(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
-        return []
+        return this.userService.findAll(role)
     }
 
     /*
