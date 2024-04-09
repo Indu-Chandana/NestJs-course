@@ -37,24 +37,24 @@ export class UsersController {
     */
     @Get(':id') // GET / users/:id
     findOne(@Param('id') id: string) {
-        return { id }
+        return this.userService.findOne(+id) // convert num to string
     }
 
     /* -------------------- POST Route --------------------  */
     @Post() // POST / users
-    create(@Body() user: {}) {
-        return user
+    create(@Body() user: { name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN' }) {
+        return this.userService.create(user)
     }
 
     /* -------------------- POST Route --------------------  */
     @Patch(':id') // PATCH /users/:id
-    update(@Param('id') id: string, @Body() userUpdate: {}) {
-        return { id, ...userUpdate }
+    update(@Param('id') id: string, @Body() userUpdate: { name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN' }) {
+        return this.userService.update(+id, userUpdate)
     }
 
     /* -------------------- DELETE Route --------------------  */
     @Delete(':id') // DELETE /users/:id
     delete(@Param('id') id: string) {
-        return { id }
+        return this.userService.delete(+id) // +id -> convert num to string
     }
 }
