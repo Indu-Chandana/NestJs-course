@@ -1,6 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 
 import { UsersService } from './users.service';
+import { CreateUSerDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users') // This is a decorator
 // This is the parent route. '/users'
@@ -35,26 +37,35 @@ export class UsersController {
         We u had a specific static route '/users/interns' 
         that would be before s dynamic route '/users/:id'
     */
+
+    /* 
+    ParseIntPipe - It convert string into a --> NUMBER
+    */
     @Get(':id') // GET / users/:id
-    findOne(@Param('id') id: string) {
-        return this.userService.findOne(+id) // convert num to string
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.userService.findOne(id) // convert num to string
     }
 
     /* -------------------- POST Route --------------------  */
+
+    /*
+    ValidationPipe --> that keep on eye on Dto validations and send error if found
+    */
+
     @Post() // POST / users
-    create(@Body() user: { name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN' }) {
-        return this.userService.create(user)
+    create(@Body(ValidationPipe) createUSerDto: CreateUSerDto) {
+        return this.userService.create(createUSerDto)
     }
 
     /* -------------------- POST Route --------------------  */
     @Patch(':id') // PATCH /users/:id
-    update(@Param('id') id: string, @Body() userUpdate: { name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN' }) {
-        return this.userService.update(+id, userUpdate)
+    update(@Param('id') id: string, @Body(ValidationPipe) updateUserDto: UpdateUserDto) {
+        return this.userService.update(+id, updateUserDto)
     }
 
     /* -------------------- DELETE Route --------------------  */
     @Delete(':id') // DELETE /users/:id
     delete(@Param('id') id: string) {
-        return this.userService.delete(+id) // +id -> convert num to string
+        return this.userService.delete(+id) // +id -> convert string to num
     }
 }
