@@ -36,3 +36,9 @@ enum Role {
 // ---- when we change some thing in schema ----
 // 1. npx prisma generate
 // 2. npx prisma migrate dev --name init
+
+// npm run start:dev
+
+// create module -> nest g module database
+// create module with all (modules, controllers, services) --> nest g resource employees
+// create servise in the module --> nest g service database (this servise automatically import to mentioned module.ts file. In this case modele was database)
